@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TravelMate — Travel together. Stay safe.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============== AUTH SCREEN ============== -->
+<section id="auth-screen" class="auth-screen">
+  <div class="auth-panel">
+    <div class="brand">
+      <svg class="contour-mark" viewBox="0 0 64 64" width="34" height="34"><path d="M4 40 Q 20 20 32 34 Q 44 48 60 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><path d="M4 50 Q 20 34 32 46 Q 44 58 60 38" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-linecap="round" opacity="0.6"/></svg>
+      <span>TravelMate</span>
+    </div>
+    <p class="tagline">Travel together. Stay connected. Stay safe — even offline.</p>
+
+    <div class="auth-tabs">
+      <button class="tab-btn active" data-tab="login">Log in</button>
+      <button class="tab-btn" data-tab="register">Create account</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <label>Email<input type="email" id="login-email" required placeholder="admin@travelmate.demo"></label>
+      <label>Password<input type="password" id="login-password" required placeholder="••••••••"></label>
+      <p class="form-error" id="login-error"></p>
+      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      <p class="hint">Demo: admin@travelmate.demo — any password 6+ chars once you've registered it yourself.</p>
+    </form>
+
+    <form id="register-form" class="auth-form hidden">
+      <label>Name<input type="text" id="reg-name" required placeholder="Your name"></label>
+      <label>Email<input type="email" id="reg-email" required placeholder="you@example.com"></label>
+      <label>Password<input type="password" id="reg-password" required placeholder="6+ characters"></label>
+      <p class="form-error" id="reg-error"></p>
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    </form>
+  </div>
+  <div class="auth-visual">
+    <svg viewBox="0 0 400 500" class="topo-bg" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="var(--accent-2)" stroke-width="1.5" opacity="0.35">
+        <path d="M-20 100 Q 100 40 200 100 T 420 90"/>
+        <path d="M-20 150 Q 100 90 200 150 T 420 140"/>
+        <path d="M-20 200 Q 100 140 200 200 T 420 190"/>
+        <path d="M-20 250 Q 100 190 200 250 T 420 240"/>
+      </g>
+      <g fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5">
+        <path d="M-20 320 Q 120 260 220 330 T 420 310"/>
+        <path d="M-20 360 Q 120 300 220 370 T 420 350"/>
+      </g>
+    </svg>
+    <div class="visual-copy">
+      <h1>Off the grid.<br>Not off the map.</h1>
+      <p>Chat, budget, and checklists sync automatically the moment signal returns.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== APP SHELL ============== -->
+<div id="app-shell" class="app-shell hidden">
+  <aside class="sidebar">
+    <div class="brand small">
+      <svg class="contour-mark" viewBox="0 0 64 64" width="24" height="24"><path d="M4 40 Q 20 20 32 34 Q 44 48 60 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>
+      <span>TravelMate</span>
+    </div>
+
+    <div class="trip-switcher" id="trip-switcher">
+      <button id="trip-switcher-btn" class="trip-switcher-btn">
+        <span id="current-trip-name">No trip selected</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <nav class="nav" id="main-nav">
+      <button class="nav-item active" data-view="dashboard">Dashboard</button>
+      <button class="nav-item" data-view="trip-room">Trip Room</button>
+      <button class="nav-item" data-view="budget">Budget</button>
+      <button class="nav-item" data-view="checklist">Checklist</button>
+      <button class="nav-item" data-view="itinerary">Itinerary</button>
+      <button class="nav-item" data-view="chat">Chat</button>
+      <button class="nav-item" data-view="safety">Safety</button>
+      <button class="nav-item nav-sos" data-view="sos">SOS</button>
+      <button class="nav-item" data-view="ai">AI Assistant</button>
+      <button class="nav-item" data-view="notifications">Notifications <span class="badge hidden" id="notif-badge"></span></button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="me" id="me-chip"></div>
+      <button class="btn btn-ghost btn-small" id="logout-btn">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="view-title">Dashboard</h1>
+      <div class="conn-badge" id="conn-badge">
+        <span class="dot"></span> <span id="conn-text">Online</span>
+      </div>
+    </header>
+
+    <div class="view-container" id="view-container">
+
+      <!-- DASHBOARD -->
+      <section class="view" id="view-dashboard">
+        <div class="dash-actions">
+          <button class="btn btn-primary" id="open-create-trip">+ Create trip</button>
+          <button class="btn btn-secondary" id="open-join-trip">Join with code</button>
+        </div>
+        <div class="trip-grid" id="trip-grid"></div>
+      </section>
+
+      <!-- TRIP ROOM -->
+      <section class="view hidden" id="view-trip-room">
+        <div class="panel" id="trip-room-info"></div>
+        <h3 class="section-label">Members</h3>
+        <div class="member-list" id="member-list"></div>
+      </section>
+
+      <!-- BUDGET -->
+      <section class="view hidden" id="view-budget">
+        <div class="grid-2">
+          <div class="panel">
+            <h3 class="section-label">Add expense</h3>
+            <form id="expense-form" class="stacked-form">
+              <input type="text" id="exp-desc" placeholder="Description (e.g. Taxi to base camp)">
+              <div class="row">
+                <select id="exp-category">
+                  <option>Food</option><option>Transport</option><option>Stay</option>
+                  <option>Activities</option><option>Shopping</option><option>Other</option>
+                </select>
+                <input type="number" id="exp-amount" placeholder="Amount ₹" min="0" step="0.01">
+              </div>
+              <button class="btn btn-primary" type="submit">Add expense</button>
+            </form>
+            <h3 class="section-label" style="margin-top:20px">Category breakdown</h3>
+            <div id="category-breakdown"></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-label">Settlement</h3>
+            <div id="settlement-summary"></div>
+            <h3 class="section-label" style="margin-top:20px">Who owes whom</h3>
+            <div id="settlement-list"></div>
+          </div>
+        </div>
+        <h3 class="section-label" style="margin-top:24px">Recent expenses</h3>
+        <div id="expense-list" class="list"></div>
+      </section>
+
+      <!-- CHECKLIST -->
+      <section class="view hidden" id="view-checklist">
+        <div class="panel">
+          <form id="checklist-form" class="row">
+            <input type="text" id="checklist-text" placeholder="Add a checklist item...">
+            <button class="btn btn-primary" type="submit">Add</button>
+          </form>
+          <div id="checklist-list" class="list" style="margin-top:16px"></div>
+        </div>
+      </section>
+
+      <!-- ITINERARY -->
+      <section class="view hidden" id="view-itinerary">
+        <div class="panel">
+          <h3 class="section-label">Add stop</h3>
+          <form id="itinerary-form" class="stacked-form">
+            <div class="row">
+              <input type="number" id="it-day" placeholder="Day #" min="1" value="1" style="max-width:90px">
+              <input type="text" id="it-time" placeholder="Time (e.g. 9:00 AM)">
+            </div>
+            <input type="text" id="it-title" placeholder="Title (e.g. Trek to viewpoint)">
+            <input type="text" id="it-location" placeholder="Location">
+            <textarea id="it-notes" placeholder="Notes (optional)"></textarea>
+            <button class="btn btn-primary" type="submit">Add to itinerary</button>
+          </form>
+        </div>
+        <div id="itinerary-list" style="margin-top:20px"></div>
+      </section>
+
+      <!-- CHAT -->
+      <section class="view hidden" id="view-chat">
+        <div class="offline-chat-panel panel">
+          <div class="offline-chat-head">
+            <div>
+              <h3 class="section-label">Offline direct chat</h3>
+              <p class="muted">Pair two phones once, then chat directly without internet. Keep both devices on the same Wi-Fi/hotspot when possible.</p>
+            </div>
+            <div id="offline-peer-status" class="peer-status">Not connected</div>
+          </div>
+          <div class="offline-chat-actions">
+            <button class="btn btn-secondary" id="create-offer-btn">Create connection</button>
+            <button class="btn btn-secondary" id="use-offer-btn">Join connection</button>
+            <button class="btn btn-ghost" id="disconnect-peer-btn">Disconnect</button>
+          </div>
+          <div id="offline-pairing" class="offline-pairing hidden">
+            <div class="pair-step hidden" id="offer-step">
+              <strong>1. Send this connection code to your friend</strong>
+              <textarea id="offer-code" readonly></textarea>
+              <div class="row">
+                <button class="btn btn-primary" id="copy-offer-btn">Copy code</button>
+                <button class="btn btn-ghost" id="close-pairing-btn">Close</button>
+              </div>
+              <p class="muted small-note">After your friend joins, paste their answer below.</p>
+              <textarea id="answer-code-input" placeholder="Paste your friend's answer here"></textarea>
+              <button class="btn btn-primary" id="apply-answer-btn">Connect</button>
+            </div>
+            <div class="pair-step hidden" id="answer-step">
+              <strong>1. Paste your friend's connection code</strong>
+              <textarea id="offer-code-input" placeholder="Paste the connection code here"></textarea>
+              <button class="btn btn-primary" id="create-answer-btn">Create my answer</button>
+              <p class="muted small-note">Then send the answer below back to your friend.</p>
+              <textarea id="answer-code" readonly></textarea>
+              <button class="btn btn-secondary" id="copy-answer-btn">Copy answer</button>
+            </div>
+          </div>
+        </div>
+        <div class="chat-box">
+          <div id="chat-messages" class="chat-messages"></div>
+          <form id="chat-form" class="chat-input-row">
+            <input type="text" id="chat-text" placeholder="Message the group..." autocomplete="off">
+            <button class="btn btn-primary" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- SAFETY -->
+      <section class="view hidden" id="view-safety">
+        <div class="grid-2">
+          <div class="panel">
+            <h3 class="section-label">Safety radius</h3>
+            <p class="muted">Members are flagged OUT_OF_RANGE when farther than this from the organizer.</p>
+            <div class="row">
+              <input type="number" id="radius-input" min="10" step="10">
+              <button class="btn btn-secondary" id="save-radius">Save</button>
+            </div>
+            <h3 class="section-label" style="margin-top:20px">Update my location</h3>
+            <p class="muted">Uses your browser's location if allowed, otherwise set it manually.</p>
+            <button class="btn btn-secondary" id="use-geo-btn">Share my GPS location</button>
+            <div class="row" style="margin-top:10px">
+              <input type="number" id="manual-lat" placeholder="Latitude" step="0.0001">
+              <input type="number" id="manual-lng" placeholder="Longitude" step="0.0001">
+            </div>
+            <div class="row">
+              <input type="number" id="manual-battery" placeholder="Battery %" min="0" max="100" value="100">
+              <button class="btn btn-primary" id="save-location">Update status</button>
+            </div>
+          </div>
+          <div class="panel">
+            <h3 class="section-label">Safety alerts</h3>
+            <div id="safety-alert-list" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOS -->
+      <section class="view hidden" id="view-sos">
+        <div class="panel sos-panel">
+          <h3 class="section-label">Trigger SOS</h3>
+          <p class="muted">This instantly notifies every member and the trip admin.</p>
+          <div class="sos-grid">
+            <button class="sos-type-btn" data-type="lost">Lost</button>
+            <button class="sos-type-btn" data-type="medical">Medical</button>
+            <button class="sos-type-btn" data-type="accident">Accident</button>
+            <button class="sos-type-btn" data-type="danger">Danger</button>
+            <button class="sos-type-btn" data-type="general">General</button>
+          </div>
+          <textarea id="sos-note" placeholder="Add a note (optional)"></textarea>
+          <button class="btn btn-sos btn-block" id="trigger-sos-btn">🚨 Send SOS</button>
+        </div>
+        <h3 class="section-label" style="margin-top:24px">SOS history</h3>
+        <div id="sos-list" class="list"></div>
+      </section>
+
+      <!-- AI ASSISTANT -->
+      <section class="view hidden" id="view-ai">
+        <div class="chat-box">
+          <div id="ai-messages" class="chat-messages"></div>
+          <form id="ai-form" class="chat-input-row">
+            <input type="text" id="ai-text" placeholder="Ask about budget, packing, itinerary, safety..." autocomplete="off">
+            <button class="btn btn-primary" type="submit">Ask</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section class="view hidden" id="view-notifications">
+        <div id="notif-list" class="list"></div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============== MODALS ============== -->
+<div id="modal-backdrop" class="modal-backdrop hidden">
+  <div class="modal" id="create-trip-modal">
+    <h3>Create a trip</h3>
+    <form id="create-trip-form" class="stacked-form">
+      <input type="text" id="ct-name" placeholder="Trip name (e.g. Manali Adventure)" required>
+      <input type="text" id="ct-destination" placeholder="Destination">
+      <div class="row">
+        <input type="date" id="ct-start">
+        <input type="date" id="ct-end">
+      </div>
+      <label class="small-label">Safety radius (meters)</label>
+      <input type="number" id="ct-radius" value="100" min="10" step="10">
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Create trip</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal hidden" id="join-trip-modal">
+    <h3>Join a trip</h3>
+    <form id="join-trip-form" class="stacked-form">
+      <input type="text" id="jt-code" placeholder="TRIP-XXXX" style="text-transform:uppercase" required>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Join</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
