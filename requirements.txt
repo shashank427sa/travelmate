@@ -1,0 +1,7 @@
+﻿streamlit
+pandas
+scikit-learn
+requests
+wikipedia
+pyspellchecker
+beautifulsoup4
