@@ -5,3 +5,5 @@ requests
 wikipedia
 pyspellchecker
 beautifulsoup4
+flask
+gunicorn
